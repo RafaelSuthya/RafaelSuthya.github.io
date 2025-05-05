@@ -54,7 +54,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       // Re-center basket after resize
-      basket.y = canvas.height - 60;
+      basket.y = canvas.height - (isMobile ? 40 : 60);
       if (basket.x + basket.width > canvas.width) {
         basket.x = canvas.width - basket.width;
       }
@@ -63,18 +63,22 @@
     let score = 0;
     let timeLeft = 60;
 
+    // Detect if on mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Set sizes and speed based on device
     const basket = {
-      width: 150,
-      height: 30,
-      x: canvas.width / 2 - 75,
-      y: canvas.height - 60,
-      speed: 10 // Slower movement than before
+      width: isMobile ? 90 : 150,
+      height: isMobile ? 18 : 30,
+      x: canvas.width / 2 - (isMobile ? 90 : 150) / 2,
+      y: canvas.height - (isMobile ? 40 : 60),
+      speed: 10
     };
 
     let moveLeft = false;
     let moveRight = false;
     const objects = [];
-    const objectSize = 80; // Make the ball larger
+    const objectSize = isMobile ? 40 : 80; // Smaller ball for mobile
     let gameInterval, timerInterval;
 
     // Load ITARU logo image
@@ -89,7 +93,7 @@
       objects.push({
         x: Math.random() * (canvas.width - objectSize),
         y: -objectSize,
-        speedY: 8 + Math.random() * 3,
+        speedY: isMobile ? 14 + Math.random() * 4 : 8 + Math.random() * 3, // Faster on mobile
         speedX: (Math.random() - 0.5) * 2, // Add horizontal speed for bounce
         inBasket: false,
         bounceCount: 0
