@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Tangkap Benda</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      background: #f0f0f0;
+    }
+    canvas {
+      display: block;
+      background: #87ceeb;
+    }
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">
+    Skor: <span id="score">0</span> | Waktu: <span id="timer">60</span> detik
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <!-- Popup overlay for game over -->
+  <div id="gameOverPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:100; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:30px 40px; border-radius:12px; text-align:center;">
+      <h2>Waktu habis!</h2>
+      <p>Skor akhir: <span id="finalScore">0</span></p>
+      <button id="restartBtn" style="padding:10px 20px; font-size:18px;">Main Lagi</button>
+    </div>
+  </div>
+  <!-- Start Game Overlay -->
+  <div id="startOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:200; display:flex; justify-content:center; align-items:center;">
+    <button id="startBtn" style="padding:20px 40px; font-size:28px; border-radius:12px; border:none; background:#fff; cursor:pointer;">Mulai Game</button>
+  </div>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Responsive: Resize canvas on window resize
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // Re-center basket after resize
+      basket.y = canvas.height - 60;
+      if (basket.x + basket.width > canvas.width) {
+        basket.x = canvas.width - basket.width;
+      }
+    });
+
+    let score = 0;
+    let timeLeft = 60;
+
+    const basket = {
+      width: 150,
+      height: 30,
+      x: canvas.width / 2 - 75,
+      y: canvas.height - 60,
+      speed: 10 // Slower movement than before
+    };
+
+    let moveLeft = false;
+    let moveRight = false;
+    const objects = [];
+    const objectSize = 80; // Make the ball larger
+    let gameInterval, timerInterval;
+
+    // Load ITARU logo image
+    const ballImage = new Image();
+    ballImage.src = "gambar/LOGO ITARU (Trans)2 (1).png"; // Make sure this path is correct
+
+    // Load background image
+    const bgImage = new Image();
+    bgImage.src = "gambar/IMG_1245.jpg"; // Make sure this path is correct
+
+    function createObject() {
+      objects.push({
+        x: Math.random() * (canvas.width - objectSize),
+        y: -objectSize,
+        speedY: 8 + Math.random() * 3,
+        speedX: (Math.random() - 0.5) * 2, // Add horizontal speed for bounce
+        inBasket: false,
+        bounceCount: 0
+      });
+    }
+
+    function drawObjects() {
+      objects.forEach(obj => {
+        ctx.save();
+        // Draw the logo image as the ball
+        ctx.drawImage(
+          ballImage,
+          obj.x - objectSize / 2,
+          obj.y - objectSize / 2,
+          objectSize,
+          objectSize
+        );
+        ctx.restore();
+      });
+    }
+
+    function drawBasket() {
+      // Draw basket body (semi-circle)
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(
+        basket.x + basket.width / 2,
+        basket.y + basket.height / 2,
+        basket.width / 2,
+        Math.PI, 0, false
+      );
+      ctx.fillStyle = "#b8860b";
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#8b5c2a";
+      ctx.stroke();
+
+      // Draw basket rim
+      ctx.beginPath();
+      ctx.ellipse(
+        basket.x + basket.width / 2,
+        basket.y + basket.height / 2,
+        basket.width / 2,
+        basket.height / 2,
+        0, 0, Math.PI * 2
+      );
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#deb887";
+      ctx.stroke();
+
+      // Draw basket lines (to look like a woven basket)
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#8b5c2a";
+      for (let i = 1; i < 6; i++) {
+        ctx.beginPath();
+        ctx.moveTo(basket.x + (basket.width / 6) * i, basket.y + basket.height / 2);
+        ctx.lineTo(basket.x + (basket.width / 6) * i, basket.y + basket.height + 10);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function createObject() {
+      objects.push({
+        x: Math.random() * (canvas.width - objectSize),
+        y: -objectSize,
+        speed: 8 + Math.random() * 3 // Even faster falling balls
+      });
+    }
+
+    function drawBasket() {
+      // Draw basket body (semi-circle)
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(
+        basket.x + basket.width / 2,
+        basket.y + basket.height / 2,
+        basket.width / 2,
+        Math.PI, 0, false
+      );
+      ctx.fillStyle = "#b8860b";
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#8b5c2a";
+      ctx.stroke();
+
+      // Draw basket rim
+      ctx.beginPath();
+      ctx.ellipse(
+        basket.x + basket.width / 2,
+        basket.y + basket.height / 2,
+        basket.width / 2,
+        basket.height / 2,
+        0, 0, Math.PI * 2
+      );
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#deb887";
+      ctx.stroke();
+
+      // Draw basket lines (to look like a woven basket)
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#8b5c2a";
+      for (let i = 1; i < 6; i++) {
+        ctx.beginPath();
+        ctx.moveTo(basket.x + (basket.width / 6) * i, basket.y + basket.height / 2);
+        ctx.lineTo(basket.x + (basket.width / 6) * i, basket.y + basket.height + 10);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function createObject() {
+      objects.push({
+        x: Math.random() * (canvas.width - objectSize),
+        y: -objectSize,
+        speedY: 8 + Math.random() * 3,
+        speedX: (Math.random() - 0.5) * 2, // Add horizontal speed for bounce
+        inBasket: false,
+        bounceCount: 0
+      });
+    }
+
+    function drawObjects() {
+      ctx.fillStyle = "red";
+      objects.forEach(obj => {
+        ctx.beginPath();
+        ctx.arc(obj.x, obj.y, objectSize / 2, 0, Math.PI * 2);
+        ctx.shadowColor = "rgba(0,0,0,0.3)";
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    }
+
+    function updateObjects() {
+      for (let i = objects.length - 1; i >= 0; i--) {
+        let obj = objects[i];
+
+        // If ball is in basket, animate bounce inside basket
+        if (obj.inBasket) {
+          if (obj.bounceCount < 12) {
+            obj.y += Math.sin(obj.bounceCount / 2) * 2;
+            obj.bounceCount++;
+          } else {
+            objects.splice(i, 1); // Remove after bounce animation
+          }
+          continue;
+        }
+
+        obj.y += obj.speedY;
+        obj.x += obj.speedX;
+
+        // Bounce off left/right canvas edges
+        if (obj.x - objectSize / 2 < 0) {
+          obj.x = objectSize / 2;
+          obj.speedX *= -1;
+        }
+        if (obj.x + objectSize / 2 > canvas.width) {
+          obj.x = canvas.width - objectSize / 2;
+          obj.speedX *= -1;
+        }
+
+        // Basket rim positions
+        const rimLeft = basket.x;
+        const rimRight = basket.x + basket.width;
+        const rimTop = basket.y + basket.height / 2;
+
+        // Ball hits basket rim (left)
+        if (
+          obj.y + objectSize / 2 > rimTop - 5 &&
+          obj.y + objectSize / 2 < rimTop + 15 &&
+          obj.x > rimLeft - objectSize / 2 &&
+          obj.x < rimLeft + 10
+        ) {
+          obj.x = rimLeft - objectSize / 2;
+          obj.speedX = -Math.abs(obj.speedX) || -3;
+        }
+        // Ball hits basket rim (right)
+        else if (
+          obj.y + objectSize / 2 > rimTop - 5 &&
+          obj.y + objectSize / 2 < rimTop + 15 &&
+          obj.x > rimRight - 10 &&
+          obj.x < rimRight + objectSize / 2
+        ) {
+          obj.x = rimRight + objectSize / 2;
+          obj.speedX = Math.abs(obj.speedX) || 3;
+        }
+        // Ball enters basket (center)
+        else if (
+          obj.y + objectSize / 2 > rimTop &&
+          obj.x > rimLeft + 10 &&
+          obj.x < rimRight - 10 &&
+          obj.y + objectSize / 2 < basket.y + basket.height + objectSize / 2
+        ) {
+          obj.y = basket.y + basket.height / 2 + objectSize / 2;
+          obj.inBasket = true;
+          obj.bounceCount = 0;
+          score++;
+          document.getElementById("score").textContent = score;
+        }
+        // Remove ball if it falls below basket
+        else if (obj.y - objectSize / 2 > canvas.height) {
+          objects.splice(i, 1);
+        }
+      }
+    }
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw background image with 60% opacity
+      if (bgImage.complete) {
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+        ctx.restore();
+      }
+
+      // Smooth basket movement
+      if (moveLeft) {
+        basket.x -= basket.speed;
+        if (basket.x < 0) basket.x = 0;
+      }
+      if (moveRight) {
+        basket.x += basket.speed;
+        if (basket.x + basket.width > canvas.width)
+          basket.x = canvas.width - basket.width;
+      }
+
+      drawBasket();
+      drawObjects();
+      updateObjects();
+    }
+
+    function showGameOverPopup() {
+      document.getElementById("finalScore").textContent = score;
+      document.getElementById("gameOverPopup").style.display = "flex";
+    }
+
+    function hideGameOverPopup() {
+      document.getElementById("gameOverPopup").style.display = "none";
+    }
+
+    function resetGame() {
+      score = 0;
+      timeLeft = 60;
+      basket.x = canvas.width / 2 - basket.width / 2;
+      objects.length = 0;
+      document.getElementById("score").textContent = score;
+      document.getElementById("timer").textContent = timeLeft;
+      hideGameOverPopup();
+      startGame();
+    }
+
+    function startGame() {
+      // Remove the initial createObject() call
+      gameInterval = setInterval(() => {
+        // Only create a new object if there are none on the screen
+        if (objects.length === 0) {
+          createObject();
+        }
+        gameLoop();
+      }, 15); // Faster interval for smoother/faster gameplay
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(gameInterval);
+          clearInterval(timerInterval);
+          showGameOverPopup();
+        }
+      }, 1000);
+    }
+
+    // Change this:
+    // document.getElementById("restartBtn").addEventListener("click", resetGame);
+    
+    // To this:
+    document.getElementById("restartBtn").addEventListener("click", function() {
+      window.location.href = "https://pmb.tarumanagara.ac.id/register";
+    });
+
+    // Kontrol kiri dan kanan (smooth)
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowLeft") {
+        moveLeft = true;
+      } else if (e.key === "ArrowRight") {
+        moveRight = true;
+      }
+    });
+
+    document.addEventListener("keyup", e => {
+      if (e.key === "ArrowLeft") {
+        moveLeft = false;
+      } else if (e.key === "ArrowRight") {
+        moveRight = false;
+      }
+    });
+
+    // Start button logic
+    document.getElementById("startBtn").addEventListener("click", function() {
+      document.getElementById("startOverlay").style.display = "none";
+      startGame();
+    });
+
+    // Remove or comment out this line:
+    // startGame();
+
+    // Touch controls for mobile
+    let touchStartX = null;
+    canvas.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+      }
+    });
+
+    canvas.addEventListener("touchmove", function(e) {
+      if (e.touches.length === 1 && touchStartX !== null) {
+        const touchX = e.touches[0].clientX;
+        const dx = touchX - touchStartX;
+        basket.x += dx;
+        if (basket.x < 0) basket.x = 0;
+        if (basket.x + basket.width > canvas.width) basket.x = canvas.width - basket.width;
+        touchStartX = touchX;
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener("touchend", function(e) {
+      touchStartX = null;
+    });
+
+    // Remove or comment out this line:
+    // startGame();
+  </script>
+</body>
+</html>
