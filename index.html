@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Undangan HUT ke-1 ITARU</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <!-- Add Google Fonts for invitation style -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Indie+Flower&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #FFD700;
+      --dark-blue: #0a174e;
+      --light-blue: #1a237e;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .aspect-9-16 {
+      width: 100vw;
+      max-width: 450px;
+      aspect-ratio: 9 / 16;
+      height: calc(100vw * 16 / 9);
+      max-height: 100vh;
+      box-shadow: 0 0 30px 10px #FFD70055, 0 0 0 8px #fff3;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 4px solid var(--gold);
+    }
+
+    @media (max-width: 500px) {
+      .aspect-9-16 {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
+    }
+
+    /* Decorative Ribbon */
+    .ribbon {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      background: #fff;
+      color: var(--dark-blue);
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding: 16px 48px 12px 48px;
+      border-radius: 0 0 32px 32px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 30px 10px #FFD70055, 0 0 0 8px #fff3;
+      letter-spacing: 2px;
+      z-index: 10;
+      text-shadow: 1px 1px 4px #0001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-width: 280px;
+      animation: ribbonPulse 2s infinite alternate;
+    }
+    
+    @keyframes ribbonPulse {
+      0% { transform: translateX(-50%) rotate(-3deg) scale(1); }
+      100% { transform: translateX(-50%) rotate(-3deg) scale(1.05); }
+    }
+    
+    .ribbon-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--dark-blue);
+      margin: 0 4px;
+    }
+    
+    .ribbon-emoji {
+      font-size: 1.5em;
+      margin: 0 2px;
+      line-height: 1;
+      animation: spin 4s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Confetti Animation */
+    .confetti-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--gold);
+      opacity: 0.8;
+      animation: confetti-fall 5s linear infinite;
+    }
+    
+    .confetti:nth-child(2n) {
+      background-color: #ff6f61;
+    }
+    
+    .confetti:nth-child(3n) {
+      background-color: #00c3ff;
+    }
+    
+    .confetti:nth-child(4n) {
+      background-color: #fff;
+    }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Balloons at the bottom */
+    .balloons {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .balloon {
+      font-size: 2.5rem;
+      margin: 0 8px;
+      filter: drop-shadow(0 2px 6px #0008);
+      animation: balloon-float 3s ease-in-out infinite alternate;
+      position: relative;
+    }
+    
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      width: 2px;
+      height: 40px;
+      background-color: rgba(255,255,255,0.5);
+      transform: translateX(-50%);
+    }
+    
+    .balloon.b1 { 
+      animation-delay: 0s;
+      animation-duration: 3.5s;
+    }
+    .balloon.b2 { 
+      animation-delay: 0.7s;
+      animation-duration: 3.2s;
+    }
+    .balloon.b3 { 
+      animation-delay: 1.4s;
+      animation-duration: 4s;
+    }
+    
+    @keyframes balloon-float {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-30px) rotate(3deg); }
+    }
+
+    /* Floating stars in background */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      100% { opacity: 0.8; }
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .swiper-wrapper {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      width: 100% !important;
+      box-sizing: border-box;
+      padding: 38px 24px 24px 24px;
+      background: none;
+      color: white;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1, h2, h3, p {
+      margin: 10px 0;
+      text-shadow: 1px 1px 6px #000a;
+    }
+
+    .highlight {
+      font-size: 3rem;
+      color: var(--gold);
+      font-weight: bold;
+      text-shadow: 1px 1px 8px #ff6f61, 1px 1px 5px #000;
+      letter-spacing: 2px;
+      font-family: 'Dancing Script', cursive;
+      animation: textGlow 2s infinite alternate;
+    }
+    
+    @keyframes textGlow {
+      0% { text-shadow: 1px 1px 8px #ff6f61, 1px 1px 5px #000; }
+      100% { text-shadow: 1px 1px 15px #ff6f61, 1px 1px 10px #000, 0 0 20px var(--gold); }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s ease;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: 0.5s;
+      z-index: -1;
+    }
+    
+    button:hover::before {
+      left: 100%;
+    }
+    
+    .back-btn {
+      background: linear-gradient(135deg, #ad9463 70%, var(--dark-blue) 100%);
+      color: var(--gold);
+      border: 2px solid var(--gold);
+      margin-top: 0;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    
+    .back-btn:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    button:hover {
+      background: var(--gold);
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    /* Arrow navigation styles */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.75);
+      color: #000;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 30;
+      box-shadow: 0 2px 8px #0002;
+      transition: all 0.3s ease;
+      opacity: 0.85;
+      user-select: none;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.1); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+    
+    .nav-arrow:hover {
+      background: var(--gold);
+      color: #000;
+      animation: none;
+      transform: translateY(-50%) scale(1.2);
+    }
+    
+    .nav-arrow.left {
+      left: 8px;
+    }
+    
+    .nav-arrow.right {
+      right: 8px;
+    }
+    
+    .nav-arrow.disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      animation: none;
+    }
+    
+    @media (max-width: 500px) {
+      .nav-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+      }
+      .nav-arrow.left {
+        left: 4px;
+      }
+      .nav-arrow.right {
+        right: 4px;
+      }
+    }
+
+    /* Floating bubbles animation */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Guest card hover effect */
+    .guest-card {
+      width: 150px;
+      height: 150px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px #0006, 0 0 0 4px var(--gold);
+      background: #fff;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .guest-card:hover {
+      transform: scale(1.07) rotate(2deg);
+      box-shadow: 0 8px 25px #0009, 0 0 0 4px var(--gold), 0 0 20px var(--gold);
+    }
+    
+    .guest-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    
+    .guest-card:hover img {
+      transform: scale(1.1);
+    }
+    
+    /* Date slide animation */
+    .date-item {
+      display: inline-block;
+      animation: bounceIn 1s;
+    }
+    
+    /* Curtain effect */
+    .curtain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 25;
+      pointer-events: none;
+      opacity: 1; /* Start visible */
+      display: flex;
+    }
+    
+    .curtain-panel {
+      width: 50%;
+      height: 100%;
+      background: var(--gold);
+      transition: transform 1s ease;
+      position: relative;
+    }
+    
+    .curtain-left {
+      left: 0;
+      transform: translateX(-100%);
+    }
+    
+    .curtain-right {
+      right: 0;
+      transform: translateX(100%);
+    }
+    
+    .curtain.open .curtain-left {
+      transform: translateX(0);
+    }
+    
+    .curtain.open .curtain-right {
+      transform: translateX(0);
+    }
+
+    /* Music controls */
+    #music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: none;
+    }
+
+    #music-controls button {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    #music-controls button:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Music (autoplay removed) -->
+  <audio id="background-music" loop>
+    <source src="gambar/V1RST - Malu Malu Karaoke Instrumental.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Music Controls (hidden by default) -->
+  <div id="music-controls">
+    <button onclick="enableMusic()">🔊</button>
+  </div>
+
+  <div class="aspect-9-16">
+    <!-- Background elements -->
+    <div class="stars" id="stars"></div>
+    <div class="bubbles" id="bubbles"></div>
+    <div class="confetti-container" id="confetti-container"></div>
+    
+    <!-- Curtain Overlay -->
+    <div class="curtain" id="curtain">
+      <div class="curtain-panel curtain-left"></div>
+      <div class="curtain-panel curtain-right"></div>
+    </div>
+    
+    <!-- Decorative Ribbon -->
+    <div class="ribbon">
+      <span class="ribbon-emoji">🎈</span>
+      <span class="ribbon-text">HUT ke-1 ITARU</span>
+      <span class="ribbon-emoji">🎉</span>
+    </div>
+    
+    <!-- Left Arrow -->
+    <div class="nav-arrow left" id="arrow-left">&lt;</div>
+    
+    <!-- Right Arrow -->
+    <div class="nav-arrow right" id="arrow-right">&gt;</div>
+    
+    <!-- Swiper container -->
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide" style="opacity:0; pointer-events:none;">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <img src="gambar/logo.png" alt="Logo" style="width:300px;max-width:95vw;margin-top:10px;margin-bottom:10px;display:block;filter:brightness(0) invert(1);" class="animate__animated animate__fadeInDown">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+              <h2 class="animate__animated animate__fadeIn" style="
+                margin-bottom: 10px;
+                margin-top: 0;
+                font-size: 2rem;
+                font-family: 'Times New Roman', Times, serif;
+                font-style: normal;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-align: center;
+              ">
+                YOU ARE INVITED TO
+              </h2>
+              <h1 class="highlight animate__animated animate__fadeInUp" style="
+                font-size:3rem;
+                line-height:1.15;
+                margin:0;
+                font-family: 'Times New Roman', cursive;
+                font-style: italic;
+                font-weight: 700;
+                text-align: center;
+              ">
+                ITARU FAIR
+              </h1>
+              <p class="animate__animated animate__fadeIn" style="margin-top: 20px;">
+                Slide kanan untuk melihat detail acara &rarr;
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <h2 style="margin-bottom: 24px; font-size: 2.2rem; letter-spacing: 1px; color: var(--gold);" class="animate__animated animate__fadeInDown">Guest Stars</h2>
+          <div style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto 12px auto;
+          ">
+            <div style="display: flex; flex-direction: column; align-items: center;" class="animate__animated animate__fadeInLeft">
+              <div class="guest-card">
+                <img src="gambar/kiki.jpg" alt="Teuki Rizki">
+              </div>
+              <span style="margin-top:2px;font-weight:bold;color:var(--gold);font-size:1.1rem;letter-spacing:1px;">Teuku Rizki</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center;" class="animate__animated animate__fadeInRight">
+              <div class="guest-card">
+                <img src="gambar/virst.webp" alt="V1RST">
+              </div>
+              <span style="margin-top:2px;font-weight:bold;color:var(--gold);font-size:1.1rem;letter-spacing:1px;">V1RST</span>
+            </div>
+          </div>
+          <p class="animate__animated animate__fadeInUp" style="margin-top: 20px; animation-delay: 0.5s;">
+            Akan menghibur dengan penampilan spesial!
+          </p>
+        </div>
+        
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+          <h2 class="animate__animated animate__fadeIn">🗓️ Tanggal:</h2>
+          <h1 class="highlight animate__animated animate__pulse animate__infinite" style="animation-duration: 2s;">Sabtu, 21 Juni</h1>
+          <h2 class="animate__animated animate__fadeIn">🕤 Pukul: <span class="date-item">09.30</span> WIB</h2>
+          <p class="animate__animated animate__fadeIn">📍 Jl. TB Simatupang & Jl. Raya Cilandak KKO,</p>
+          <p class="animate__animated animate__fadeIn">No.1, RT.1/RW.5, Ragunan, Ps. Minggu, Jakarta Selatan</p>
+          <!-- Google Maps Embed START -->
+          <div style="width:100%;padding:16px 0 0 0;box-sizing:border-box;" class="animate__animated animate__fadeInUp">
+            <iframe
+              width="100%"
+              height="120"
+              style="border:0;border-radius:16px;box-shadow:0 2px 8px #0002;"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Tarumanagara+Institute+-+ITARU&hl=id&z=17&output=embed">
+            </iframe>
+            <div style="text-align:center;margin-top:4px;">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=Tarumanagara+Institute+-+ITARU" target="_blank" style="color:var(--gold);font-weight:bold;text-decoration:none;">
+                Buka di Google Maps &rarr;
+              </a>
+            </div>
+          </div>
+          <!-- Google Maps Embed END -->
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="swiper-slide">
+          <h1 class="animate__animated animate__fadeInDown">#ITARU1stAnniversary 🎉</h1>
+          <p class="animate__animated animate__fadeIn">Satu tahun pertumbuhan, inovasi, dan perjalanan luar biasa.</p>
+          <div style="margin: 20px 0;" class="animate__animated animate__zoomIn">
+            <div style="font-size: 3rem; animation: pulse 2s infinite;">✨</div>
+          </div>
+          <button onclick="addToCalendar()" class="animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">Add to Calendar</button>
+          <button onclick="shareWA()" class="animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">Contact For More Information</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Balloons at the bottom -->
+    <div class="balloons">
+      <span class="balloon b1" style="color:#ff6f61;">🎈</span>
+      <span class="balloon b2" style="color:var(--gold);">🎈</span>
+      <span class="balloon b3" style="color:#00c3ff;">🎈</span>
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    // Create background elements
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const starCount = 50;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Random position
+        const size = Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation delay
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    function createBubbles() {
+      const bubblesContainer = document.getElementById('bubbles');
+      const bubbleCount = 15;
+      
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        
+        // Random size
+        const size = Math.random() * 20 + 10;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        
+        // Random position
+        bubble.style.left = `${Math.random() * 100}%`;
+        
+        // Random animation duration
+        const duration = Math.random() * 10 + 10;
+        bubble.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        bubble.style.animationDelay = `${Math.random() * 5}s`;
+        
+        bubblesContainer.appendChild(bubble);
+      }
+    }
+    
+    function createConfetti() {
+      const confettiContainer = document.getElementById('confetti-container');
+      const confettiCount = 50;
+      
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        
+        // Random position
+        confetti.style.left = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = Math.random() * 10 + 5;
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        
+        // Random shape
+        if (Math.random() > 0.5) {
+          confetti.style.borderRadius = '50%';
+        } else {
+          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        }
+        
+        // Random animation duration
+        const duration = Math.random() * 3 + 2;
+        confetti.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        confetti.style.animationDelay = `${Math.random() * 5}s`;
+        
+        confettiContainer.appendChild(confetti);
+      }
+    }
+    
+    // Music handling functions
+    function handleMusic() {
+      const music = document.getElementById('background-music');
+      const musicControls = document.getElementById('music-controls');
+      
+      // Try to play music automatically
+      music.play().then(() => {
+        // If successful, hide controls
+        musicControls.style.display = 'none';
+      }).catch(error => {
+        // If failed, show manual play button
+        musicControls.style.display = 'block';
+        console.log("Autoplay prevented. Showing manual play button.");
+      });
+    }
+
+    function enableMusic() {
+      const music = document.getElementById('background-music');
+      const musicControls = document.getElementById('music-controls');
+      
+      music.play().then(() => {
+        musicControls.style.display = 'none';
+      });
+      
+      // Set volume to 30% so it's not too loud
+      music.volume = 0.3;
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      createBubbles();
+      createConfetti();
+      
+      // Initialize swiper but keep it hidden
+      const swiper = new Swiper('.swiper', {
+        direction: 'horizontal',
+        loop: false,
+        init: false
+      });
+      
+      // Only hide slide 1 initially
+      document.querySelector('.swiper-slide').style.opacity = '0';
+      document.querySelector('.swiper-slide').style.pointerEvents = 'none';
+
+      // Try to play music when page loads
+      handleMusic();
+
+      // Add click handler to trigger curtain animation
+      document.querySelector('.aspect-9-16').addEventListener('click', function firstClickHandler() {
+        const curtain = document.getElementById('curtain');
+        
+        // Show curtain
+        curtain.classList.add('show');
+        
+        // Try to play music again after first interaction
+        handleMusic();
+        
+        // Open curtain after short delay
+        setTimeout(() => {
+          curtain.classList.add('open');
+          
+          // Initialize swiper after curtain opens
+          setTimeout(() => {
+            swiper.init();
+            updateArrows();
+            curtain.classList.remove('show', 'open');
+            
+            // Show slide 1 with animations
+            const slide1 = document.querySelector('.swiper-slide');
+            slide1.style.opacity = '1';
+            slide1.style.pointerEvents = 'auto';
+            
+            const elements = slide1.querySelectorAll('.animate__animated');
+            elements.forEach((el, index) => {
+              el.style.animation = 'none';
+              void el.offsetWidth;
+              el.style.animation = null;
+              el.style.animationDelay = `${index * 0.2 + 0.5}s`;
+            });
+          }, 1000);
+        }, 100);
+        
+        // Remove this click handler after first click
+        this.removeEventListener('click', firstClickHandler);
+      });
+    });
+
+    const swiper = new Swiper('.swiper', {
+      direction: 'horizontal',
+      loop: false
+    });
+
+    // Curtain effect logic
+    const curtain = document.getElementById('curtain');
+    let curtainAnimating = false;
+
+    swiper.on('slideChangeTransitionStart', function () {
+      // Trigger curtain on every slide change
+      curtain.classList.add('show');
+      curtain.classList.remove('open');
+      curtainAnimating = true;
+      
+      setTimeout(() => {
+        curtain.classList.add('open');
+      }, 20);
+      
+      setTimeout(() => {
+        curtain.classList.remove('show', 'open');
+        curtainAnimating = false;
+      }, 1100);
+
+      // Reset animations for new slide
+      const currentSlide = swiper.slides[swiper.activeIndex];
+      const elements = currentSlide.querySelectorAll('.animate__animated');
+      
+      elements.forEach((el, index) => {
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = null;
+        el.style.animationDelay = `${index * 0.2}s`;
+      });
+    });
+
+    // Arrow navigation
+    const arrowLeft = document.getElementById('arrow-left');
+    const arrowRight = document.getElementById('arrow-right');
+
+    function updateArrows() {
+      if (swiper.activeIndex === 0) {
+        arrowLeft.classList.add('disabled');
+      } else {
+        arrowLeft.classList.remove('disabled');
+      }
+      if (swiper.activeIndex === swiper.slides.length - 1) {
+        arrowRight.classList.add('disabled');
+      } else {
+        arrowRight.classList.remove('disabled');
+      }
+    }
+
+    arrowLeft.addEventListener('click', () => {
+      if (!curtainAnimating) swiper.slidePrev();
+    });
+    arrowRight.addEventListener('click', () => {
+      if (!curtainAnimating) swiper.slideNext();
+    });
+
+    swiper.on('slideChange', updateArrows);
+    // Initial state
+    updateArrows();
+
+    function addToCalendar() {
+      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=HUT+ITARU+1&dates=20240621T023000Z/20240621T043000Z&details=Lokasi:+ITARU+Campus,+Jakarta', '_blank');
+    }
+
+    function shareWA() {
+      const text = encodeURIComponent('Yuk datang ke HUT ke-1 ITARU! 🎉 Cek undangannya di: [link_undangan]');
+      window.open(`https://wa.me/6289654590258?text=${text}`, '_blank');
+    }
+    
+    // Add floating animation to date items
+    const dateItems = document.querySelectorAll('.date-item');
+    dateItems.forEach(item => {
+      item.style.display = 'inline-block';
+      item.style.animation = 'bounceIn 1s';
+    });
+  </script>
+</body>
+</html>
